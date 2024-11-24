@@ -1,16 +1,16 @@
 /* styles.css */
 body {
     background-color: #f7f7f7;
-    /* Light gray background */
+    font-family: 'Roboto', sans-serif;
 }
 
 .navbar {
-    background-color: #e91e63;
+    background-color: #f08fbb;
 }
 
 .navbar-brand,
 .navbar-nav .nav-link {
-    color: white !important;
+    color: black !important;
 }
 
 .content-container {
@@ -22,7 +22,7 @@ body {
 }
 
 h1 {
-    color: #e91e63;
+    color: #f08fbb;
     font-weight: bold;
     text-align: center;
     margin-bottom: 20px;
@@ -69,7 +69,7 @@ form button {
     display: block;
     width: 100%;
     padding: 10px;
-    background-color: #ff4081;
+    background-color: #f08fbb;
     color: white;
     border: none;
     border-radius: 5px;
@@ -78,5 +78,5 @@ form button {
 }
 
 form button:hover {
-    background-color: #e63670;
+    background-color: #f08fbb;
 }

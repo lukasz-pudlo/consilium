@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', include('uploads.urls')),
+    path('applications/', include('applications.urls'),)
 ]
 
 if settings.DEBUG:
