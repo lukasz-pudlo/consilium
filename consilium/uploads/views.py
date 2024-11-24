@@ -1,19 +1,19 @@
 from django.shortcuts import render, redirect
-from .forms import MediaUploadForm
-from .models import MediaUpload
+from .models import MediaPost
+from .forms import MediaPostForm
+
+
+def media_list(request):
+    posts = MediaPost.objects.order_by('-created_at')  # Order by newest first
+    return render(request, 'uploads/media_list.html', {'posts': posts})
 
 
 def upload_media(request):
     if request.method == 'POST':
-        form = MediaUploadForm(request.POST, request.FILES)
+        form = MediaPostForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('media_list')
     else:
-        form = MediaUploadForm()
-    return render(request, 'upload_media.html', {'form': form})
-
-
-def media_list(request):
-    media = MediaUpload.objects.all()
-    return render(request, 'media_list.html', {'media': media})
+        form = MediaPostForm()
+    return render(request, 'uploads/upload_media.html', {'form': form})

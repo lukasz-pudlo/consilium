@@ -13,18 +13,18 @@ def submit_application(request):
             return redirect('application_list')
     else:
         form = GrantApplicationForm()
-    return render(request, 'submit_application.html', {'form': form})
+    return render(request, 'applications/submit_application.html', {'form': form})
 
 # View for listing all applications
 
 
 def application_list(request):
     applications = GrantApplication.objects.all()
-    return render(request, 'application_list.html', {'applications': applications})
+    return render(request, 'applications/application_list.html', {'applications': applications})
 
 # View for viewing a single application
 
 
 def application_detail(request, pk):
     application = get_object_or_404(GrantApplication, pk=pk)
-    return render(request, 'application_detail.html', {'application': application})
+    return render(request, 'applications/application_detail.html', {'application': application})
