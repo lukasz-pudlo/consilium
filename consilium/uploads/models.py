@@ -1,21 +1,25 @@
 from django.db import models
-from django.core.validators import FileExtensionValidator
 
 
 class MediaPost(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
+class MediaFile(models.Model):
     MEDIA_TYPE_CHOICES = [
         ('image', 'Image'),
         ('video', 'Video'),
     ]
 
-    title = models.CharField(max_length=255)
-    description = models.TextField()
+    post = models.ForeignKey(
+        MediaPost, related_name='media_files', on_delete=models.CASCADE)
     media_type = models.CharField(max_length=10, choices=MEDIA_TYPE_CHOICES)
-    image = models.ImageField(
-        upload_to='uploads/images/', blank=True, null=True)
-    video = models.FileField(
-        upload_to='uploads/videos/', blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    file = models.FileField(upload_to='uploads/media/')
 
     def __str__(self):
-        return self.title
+        return f"{self.media_type} for {self.post.title}"

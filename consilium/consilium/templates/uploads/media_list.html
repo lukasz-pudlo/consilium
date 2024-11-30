@@ -9,14 +9,32 @@
         {% for post in posts %}
             <div class="col-12 col-md-8 mb-4">
                 <div class="card shadow-sm">
-                    {% if post.media_type == "image" %}
-                        <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
-                    {% elif post.media_type == "video" %}
-                        <video class="card-img-top" controls>
-                            <source src="{{ post.video.url }}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    {% endif %}
+                    <div id="carousel-{{ post.id }}" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for media in post.media_files.all %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    {% if media.media_type == "image" %}
+                                        <img src="{{ media.file.url }}" class="d-block w-100" alt="...">
+                                    {% elif media.media_type == "video" %}
+                                        <video class="d-block w-100" controls>
+                                            <source src="{{ media.file.url }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% if post.media_files.count > 1 %} <!-- Only show controls if more than one file -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ post.id }}" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ post.id }}" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                        {% endif %}
+                    </div>
                     <div class="card-body">
                         <h5 class="card-title">{{ post.title }}</h5>
                         <p class="card-text">{{ post.description }}</p>

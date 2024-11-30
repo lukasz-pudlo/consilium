@@ -1,24 +1,27 @@
 from django import forms
-from .models import MediaPost
 
 
-class MediaPostForm(forms.ModelForm):
-    class Meta:
-        model = MediaPost
-        fields = ['title', 'description', 'media_type', 'image', 'video']
-        widgets = {
-            'description': forms.Textarea(attrs={'rows': 4}),
-        }
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
 
-    def clean(self):
-        cleaned_data = super().clean()
-        media_type = cleaned_data.get('media_type')
-        image = cleaned_data.get('image')
-        video = cleaned_data.get('video')
 
-        if media_type == 'image' and not image:
-            raise forms.ValidationError(
-                "Please upload an image for this post.")
-        if media_type == 'video' and not video:
-            raise forms.ValidationError("Please upload a video for this post.")
-        return cleaned_data
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = [single_file_clean(data, initial)]
+        return result
+
+
+class MediaPostForm(forms.Form):
+    title = forms.CharField(max_length=255, required=True, widget=forms.TextInput(
+        attrs={'class': 'form-control'}))
+    description = forms.CharField(widget=forms.Textarea(
+        attrs={'class': 'form-control', 'rows': 4}), required=True)
+    media_files = MultipleFileField()
