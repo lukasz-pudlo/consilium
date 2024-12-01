@@ -26,6 +26,7 @@ ENV.bak/
 .env
 db.sqlite3
 media
+consilium/db.sqlite3
 
 # React / Node.js
 node_modules/
